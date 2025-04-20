@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<style>
+    .articles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+    
+    .article-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s ease-in-out;
+    }
+    
+    .article-card:hover {
+        transform: translateY(-4px);
+    }
+    
+    .article-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .article-preview {
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .filter-tag {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .filter-tag.active {
+        background-color: #4299e1;
+        color: white;
+    }
+    
+    .filter-tag:not(.active) {
+        background-color: #edf2f7;
+        color: #4a5568;
+    }
+    
+    .filter-tag:hover:not(.active) {
+        background-color: #e2e8f0;
+    }
+    
+    @media (max-width: 640px) {
+        .articles-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">精选文章集</h1>
+        <p class="text-xl text-gray-600">探索创业、技术与生活的思考</p>
+    </div>
+    
+    <!-- 筛选器 -->
+    <div class="mb-8">
+        <div class="mb-4">
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">作者</h3>
+            <div class="space-x-2">
+                <a href="/" class="filter-tag {% if not selected_author %}active{% endif %}">全部</a>
+                {% for author in authors %}
+                <a href="/?author={{ author }}" 
+                   class="filter-tag {% if selected_author == author %}active{% endif %}">
+                    {{ author }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div>
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">来源</h3>
+            <div class="space-x-2">
+                <a href="/" class="filter-tag {% if not selected_source %}active{% endif %}">全部</a>
+                {% for source in sources %}
+                <a href="/?source={{ source }}" 
+                   class="filter-tag {% if selected_source == source %}active{% endif %}">
+                    {{ source }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="articles-grid">
+        {% for article in articles %}
+        <article class="article-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <div class="p-6 article-content">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="text-sm text-gray-500">{{ article.publish_date }}</span>
+                    <span class="text-sm font-medium text-blue-600">{{ article.author }}</span>
+                </div>
+                
+                <h2 class="text-xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors duration-200">
+                    <a href="{{ url_for('article', article_id=article.id) if article.id else article.url }}" 
+                       {% if not article.id %}target="_blank"{% endif %}>
+                        {{ article.title }}
+                    </a>
+                </h2>
+                
+                <p class="text-gray-600 mb-4 article-preview">{{ article.preview }}</p>
+                
+                <div class="mt-auto pt-4 flex justify-between items-center">
+                    <a href="{{ url_for('article', article_id=article.id) if article.id else article.url }}" 
+                       {% if not article.id %}target="_blank"{% endif %}
+                       class="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200">
+                        阅读全文
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    
+                    {% if article.views %}
+                    <span class="text-sm text-gray-500">
+                        {{ article.views }} 次阅读
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

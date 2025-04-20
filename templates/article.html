@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }} - Paul Graham 文章集{% endblock %}
+
+{% block extra_head %}
+<style>
+    .article-content {
+        font-size: 1.125rem;
+        line-height: 2;
+        color: #2d3748;
+        white-space: pre-wrap;
+        text-align: justify;
+        text-justify: inter-ideograph;
+        hanging-punctuation: first;
+    }
+    
+    .article-content p {
+        margin-bottom: 2rem;
+        text-align: justify;
+        text-justify: inter-ideograph;
+        letter-spacing: 0.5px;
+        word-spacing: 1px;
+        text-align-last: justify;
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto;
+        hyphens: auto;
+    }
+    
+    .article-content p:after {
+        content: "";
+        display: inline-block;
+        width: 100%;
+        height: 0;
+    }
+    
+    .article-content h1, 
+    .article-content h2, 
+    .article-content h3 {
+        margin-top: 3rem;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        color: #1a202c;
+        line-height: 1.4;
+        text-align: left;
+    }
+    
+    .article-content a {
+        color: #4299e1;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+    
+    .article-content a:hover {
+        color: #2b6cb0;
+    }
+    
+    .article-content blockquote {
+        margin: 2rem 0;
+        padding: 1.5rem 2rem;
+        border-left: 4px solid #4299e1;
+        background-color: #ebf8ff;
+        font-style: italic;
+        color: #2d3748;
+    }
+    
+    .article-content blockquote p {
+        text-align: justify;
+        text-justify: inter-ideograph;
+        margin-bottom: 1rem;
+    }
+    
+    .article-content code {
+        background-color: #edf2f7;
+        padding: 0.2em 0.4em;
+        border-radius: 0.25rem;
+        font-family: monospace;
+    }
+    
+    .article-content pre {
+        background-color: #2d3748;
+        color: #e2e8f0;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        margin: 2rem 0;
+    }
+    
+    .article-content pre code {
+        background-color: transparent;
+        padding: 0;
+        color: inherit;
+    }
+    
+    @media (max-width: 768px) {
+        .article-content {
+            font-size: 1rem;
+            line-height: 1.8;
+            letter-spacing: 0.3px;
+            word-spacing: 0.5px;
+        }
+        
+        .article-content p {
+            margin-bottom: 1.5rem;
+            text-align-last: auto;
+        }
+        
+        .article-content blockquote {
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<article class="max-w-3xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+    <div class="p-8">
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ article.title }}</h1>
+            <div class="flex items-center justify-between text-gray-600">
+                <div class="flex items-center space-x-4">
+                    <span>{{ article.publish_date }}</span>
+                    <a href="{{ article.url }}" 
+                       target="_blank"
+                       class="text-blue-600 hover:text-blue-800 transition-colors duration-200 flex items-center">
+                        原文链接
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                    </a>
+                </div>
+                <button onclick="window.history.back()" 
+                        class="text-gray-600 hover:text-gray-800 transition-colors duration-200 flex items-center">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"/>
+                    </svg>
+                    返回列表
+                </button>
+            </div>
+        </header>
+
+        <div class="article-content prose prose-lg max-w-none">
+            {{ article.content | safe }}
+        </div>
+        
+        <footer class="mt-12 pt-8 border-t border-gray-200">
+            <div class="flex justify-between items-center">
+                <a href="/" class="text-blue-600 hover:text-blue-800 transition-colors duration-200 flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"/>
+                    </svg>
+                    返回文章列表
+                </a>
+                <a href="#top" class="text-gray-600 hover:text-gray-800 transition-colors duration-200 flex items-center">
+                    回到顶部
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+                    </svg>
+                </a>
+            </div>
+        </footer>
+    </div>
+</article>
+{% endblock %} 
